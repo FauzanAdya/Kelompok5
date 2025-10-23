@@ -10,7 +10,7 @@ class TiketStack:
         self.bookings.append((pesanan_id, nama, waktu_pemesanan, 'active'))
         print(f"Tiket berhasil dipesan untuk {nama} dengan ID {pesanan_id} pada {waktu_pemesanan.strftime('%Y-%m-%d %H:%M')}.")
         print(f"Tenggat: {(waktu_pemesanan + self.tenggat_waktu).strftime('%Y-%m-%d %H:%M')}.")
-    
+
     def _cek_status(self, booking):
         id_booking, nama, waktu_pemesanan, status = booking
         if status != 'active':
@@ -20,12 +20,11 @@ class TiketStack:
         return 'active'
     
     def _cari_booking(self, pesanan_id):
-        # Cari dari top stack (akhir list) ke bawah
         for i in range(len(self.bookings) - 1, -1, -1):
             if self.bookings[i][0] == pesanan_id:
                 return i, self._cek_status(self.bookings[i])
         return -1, None
-    
+
     def cari_berdasarkan_id(self, pesanan_id):
         print(f"Mencari pesanan ID: {pesanan_id}")
         index, status = self._cari_booking(pesanan_id)
@@ -39,7 +38,7 @@ class TiketStack:
             print(f"Tiket ID {pesanan_id} sudah digunakan dan hilang.")
         else:
             print(f"Ditemukan: ID {booking[0]}, Nama {booking[1]}, Waktu {booking[2].strftime('%Y-%m-%d %H:%M')}, Status: Active")
-    
+
     def gunakan_tiket(self, pesanan_id):
         print(f"Menggunakan tiket ID: {pesanan_id}")
         index, status = self._cari_booking(pesanan_id)
@@ -53,11 +52,10 @@ class TiketStack:
         else:
             del self.bookings[index]
             print(f"Tiket berhasil digunakan dan dihapus.")
-    
+
     def urutkan_berdasarkan_waktu(self):
         active_bookings = [b for b in self.bookings if self._cek_status(b) == 'active']
         n = len(active_bookings)
-        # Langsung urutkan tanpa kondisi khusus
         for i in range(n):
             min_idx = i
             for j in range(i + 1, n):
@@ -66,7 +64,7 @@ class TiketStack:
             active_bookings[i], active_bookings[min_idx] = active_bookings[min_idx], active_bookings[i]
         self.bookings = active_bookings
         print("Stack diurutkan berdasarkan waktu untuk tiket active.")
-    
+
     def tampilkan_semua(self):
         if not self.bookings:
             print("Belum ada pesanan.")
@@ -92,27 +90,25 @@ def main():
     while True:
         print("\n=== Sistem Pemesanan Tiket ===")
         print("1. Pesan Tiket")
-        print("2. Cari Pesanan (ID)")
-        print("3. Gunakan Tiket")
-        print("4. Urutkan berdasarkan Waktu")
-        print("5. Tampilkan Semua")
-        print("6. Keluar")
-        pilihan = input("Pilih (1-6): ").strip()
+        print("2. Menampilkan Semua")
+        print("3. Cari Tiket (ID)")
+        print("4. Gunakan Tiket")
+        print("5. Keluar")
+        pilihan = input("Pilih (1-5): ").strip()
+
         if pilihan == '1':
             pesanan_id = input("ID Pesanan: ").strip()
             nama = input("Nama: ").strip()
             stack.pesan_tiket(pesanan_id, nama)
         elif pilihan == '2':
+            stack.tampilkan_semua()
+        elif pilihan == '3':
             pesanan_id = input("ID untuk cari: ").strip()
             stack.cari_berdasarkan_id(pesanan_id)
-        elif pilihan == '3':
+        elif pilihan == '4':
             pesanan_id = input("ID untuk gunakan: ").strip()
             stack.gunakan_tiket(pesanan_id)
-        elif pilihan == '4':
-            stack.urutkan_berdasarkan_waktu()
         elif pilihan == '5':
-            stack.tampilkan_semua()
-        elif pilihan == '6':
             print("Terima kasih!")
             break
         else:
