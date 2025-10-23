@@ -39,20 +39,6 @@ class TiketStack:
         else:
             print(f"Ditemukan: ID {booking[0]}, Nama {booking[1]}, Waktu {booking[2].strftime('%Y-%m-%d %H:%M')}, Status: Active")
 
-    def gunakan_tiket(self, pesanan_id):
-        print(f"Menggunakan tiket ID: {pesanan_id}")
-        index, status = self._cari_booking(pesanan_id)
-        if index == -1:
-            print("Tiket tidak ditemukan.")
-            return
-        if status == 'expired':
-            print(f"Tiket sudah hangus dan tidak bisa digunakan.")
-        elif status == 'used':
-            print(f"Tiket sudah digunakan sebelumnya.")
-        else:
-            del self.bookings[index]
-            print(f"Tiket berhasil digunakan dan dihapus.")
-
     def urutkan_berdasarkan_waktu(self):
         active_bookings = [b for b in self.bookings if self._cek_status(b) == 'active']
         n = len(active_bookings)
@@ -92,9 +78,8 @@ def main():
         print("1. Pesan Tiket")
         print("2. Menampilkan Semua")
         print("3. Cari Tiket (ID)")
-        print("4. Gunakan Tiket")
-        print("5. Keluar")
-        pilihan = input("Pilih (1-5): ").strip()
+        print("4. Keluar")
+        pilihan = input("Pilih (1-4): ").strip()
 
         if pilihan == '1':
             pesanan_id = input("ID Pesanan: ").strip()
@@ -106,9 +91,6 @@ def main():
             pesanan_id = input("ID untuk cari: ").strip()
             stack.cari_berdasarkan_id(pesanan_id)
         elif pilihan == '4':
-            pesanan_id = input("ID untuk gunakan: ").strip()
-            stack.gunakan_tiket(pesanan_id)
-        elif pilihan == '5':
             print("Terima kasih!")
             break
         else:
